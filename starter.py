@@ -14,6 +14,8 @@ from machinelearningdata import Machine_Learning_Data
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score
+from sklearn.cluster import KMeans
+from sklearn.datasets import make_blobs
 
 def extract_from_json_as_np_array(key, json_data):
     """ helper functie om data uit de json te halen en om te zetten naar numpy array voor sklearn"""
@@ -45,11 +47,21 @@ X = extract_from_json_as_np_array("x", kmeans_training)
 x = X[...,0]
 y = X[...,1]
 
+# Hoeveel clusters
+kmeans = KMeans(n_clusters=6)
+kmeans.fit(X)
+
+centroids = kmeans.cluster_centers_
+labels = kmeans.labels_
+colors = ["r.", "g.", "b.", "c.", "m.", "y.", "k."]
+
 # teken de punten
 for i in range(len(x)):
-    plt.plot(x[i], y[i], 'k.') # k = zwart
+    plt.plot(X[i][0], X[i][1], colors[labels[i]], markersize = "10")
 
 plt.axis([min(x), max(x), min(y), max(y)])
+plt.scatter(centroids[:, 0], centroids[:, 1], marker = "x", s = 150, linewidths = 25, zorder = 10)
+
 plt.show()
 
 # TODO: print deze punten uit en omcirkel de mogelijke clusters
@@ -95,4 +107,3 @@ Z = np.zeros(100) # dit is een gok dat alles 0 is... kan je zelf voorspellen hoe
 # stuur je voorspelling naar de server om te kijken hoe goed je het gedaan hebt
 classification_test = data.classification_test(Z.tolist()) # tolist zorgt ervoor dat het numpy object uit de predict omgezet wordt naar een 'normale' lijst van 1'en en 0'en
 print("Classificatie accuratie (test): " + str(classification_test))
-
