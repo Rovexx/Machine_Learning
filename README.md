@@ -1,2 +1,3 @@
-# Machine_Learning
- Machine learning assignment for the HR programming lessons
+# CMTPRG01-9 Machine Learning
+
+Machine learning assignment modified by Roel Versteeg.
